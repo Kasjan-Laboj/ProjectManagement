@@ -13,6 +13,7 @@ namespace ProjectManagement.Services
 {
     public class EmployeeService
     {
+        
         private readonly ApplicationDbContext _context;
 
         public EmployeeService(ApplicationDbContext context)
@@ -98,7 +99,6 @@ namespace ProjectManagement.Services
 
                 throw;
             }
-
         }
 
         public void AddEmployeeToProject(int employeeId, int projectId)
@@ -140,6 +140,11 @@ namespace ProjectManagement.Services
 
                 throw;
             }
+        }
+
+        public void RemoveEmployeeFromProject(int employeeId, int projectId)
+        {
+
         }
     }
 }
