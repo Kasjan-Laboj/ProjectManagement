@@ -2,6 +2,7 @@
 using ProjectManagement.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace ProjectManagement.Services
         {
             try
             {
-                var project = _context.Projects.Find(name);
+                var project = _context.Projects.FirstOrDefault(p => p.Name == name);
 
                 if (project == null)
                 {
@@ -60,6 +61,33 @@ namespace ProjectManagement.Services
             {
 
                 throw;
+            }
+        }
+        
+        public void GetListOfProjects()
+        {
+            try
+            {
+                var projects = _context.Projects.ToList();
+
+                if (projects == null)
+                {
+                    Console.WriteLine("We dont have projects");
+                    return;
+                }
+
+                foreach (var project in projects)
+                {
+                    Console.WriteLine(project);
+                }
+            }
+            catch (DbException dbEx)
+            {
+                Console.WriteLine($"Database error occurred: {dbEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error occurred while fetching the projects: {ex.Message}");
             }
         }
     }
