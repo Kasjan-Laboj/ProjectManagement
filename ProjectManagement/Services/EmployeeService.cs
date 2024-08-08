@@ -46,7 +46,7 @@ namespace ProjectManagement.Services
             }
         }
 
-        public void DeleteEmployee(int id)
+        public void RemoveEmployee(int id)
         {
             try
             {
@@ -135,16 +135,51 @@ namespace ProjectManagement.Services
             {
                 Console.WriteLine($"Database error occurred: {dbEx.Message}");
             }
-            catch (Exception)
+            catch (Exception ex) 
             {
-
-                throw;
+                Console.WriteLine($"Error database: {ex.Message}");
             }
         }
 
         public void RemoveEmployeeFromProject(int employeeId, int projectId)
         {
+            try
+            {
+                var employee = _context.Employees.Find(employeeId);
+                var project = _context.Projects
+                                .Include(p => p.Employees)
+                                .First(p => p.Id == projectId);
 
+                if (employee == null || project == null)
+                {
+                    Console.WriteLine($"Employee or Project not found");
+                    return;
+                }
+
+                if (project.Employees.Contains(employee))
+                {
+                    project.Employees.Remove(employee);
+                    _context.SaveChanges();
+                    Console.WriteLine($"Employee {employee.FullName} removed from project {project.Name}");
+                }
+                else
+                {
+                    Console.WriteLine($"{employee.FullName} is not assigned to this project");
+                }
+
+            }
+            catch (DbUpdateException dbUEx)
+            {
+                Console.WriteLine($"Database update error occurred: {dbUEx.Message}");
+            }
+            catch (DbException dbEx)
+            {
+                Console.WriteLine($"Database error occurred: {dbEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error database: {ex.Message}");
+            }
         }
     }
 }
