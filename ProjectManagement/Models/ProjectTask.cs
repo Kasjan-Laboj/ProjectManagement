@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProjectManagement.Models
+﻿namespace ProjectManagement.Models
 {
     //TODO AFTER 1.0 EXPAND
     /// <summary>
     /// Future development
     /// Employees will have tasks in projects to do 
     /// </summary>
-    public class Task
+    public class ProjectTask
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -73,7 +73,7 @@ namespace ProjectManagement.Services
             }
         }
 
-        public void GetListOfEmployees()
+        public void DisplayListOfEmployees()
         {
             try
             {

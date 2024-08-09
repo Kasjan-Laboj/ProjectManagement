@@ -20,6 +20,36 @@ namespace ProjectManagement.Services
 
         public void AddProject(string name)
         {
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("Project name cannot be empty.");
+                return;
+            }
+
+            try
+            {
+                var existingProject = _context.Projects
+                    .AsEnumerable() // zmienia z serwera na poziom klienta (inaczej wywala exception ex)
+                    .FirstOrDefault(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+                if (existingProject != null)
+                {
+                    Console.WriteLine($"Project with name '{name}' already exists.");
+                    return;
+                }
+            }
+            catch (DbException dbEx)
+            {
+                Console.WriteLine($"Database error occurred while checking for existing project: {dbEx.Message}");
+                return;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error occurred while checking existence of the project: {ex.Message}");
+                return;
+            }
+
             try
             {
                 var project = new Project()
@@ -29,6 +59,8 @@ namespace ProjectManagement.Services
 
                 _context.Projects.Add(project);
                 _context.SaveChanges();
+
+                Console.WriteLine("Project added successfully");
             }
             catch (DbUpdateException dbEx)
             {
@@ -63,8 +95,8 @@ namespace ProjectManagement.Services
                 throw;
             }
         }
-        
-        public void GetListOfProjects()
+
+        public void DisplayListOfProjects()
         {
             try
             {

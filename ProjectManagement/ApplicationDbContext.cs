@@ -10,6 +10,7 @@ namespace ProjectManagement
 {
     public class ApplicationDbContext : DbContext
     {
+        public DbSet<ProjectTask> ProjectTasks { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
@@ -20,6 +21,10 @@ namespace ProjectManagement
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Project>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+
             modelBuilder.Entity<Project>()
                 .HasMany(p => p.Employees)
                 .WithMany(e => e.Projects)

@@ -1,10 +1,15 @@
-﻿namespace ProjectManagement
+﻿using ProjectManagement.UI;
+
+namespace ProjectManagement
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            //TODO DO UNIT TESTS
+            ApplicationDbContext context = new ApplicationDbContext();
+            UserInterface userInterface = new UserInterface(context);
+
+            userInterface.Run();
         }
     }
 }
